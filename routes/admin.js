@@ -1,16 +1,22 @@
+// import library
 const express = require('express');           // library
 const bodyParser = require('body-parser');
 const md5 = require('md5');                   // md5 = mengenskripsi password, install terlebih dahulu (npm i --save md5)
 
+// implementasi
 const app = express();                        // implementasi library express
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({extended:true}));
 
+// import model
 const models = require('../models/index');   // mengimport file index.js dlm folder
 const req = require("express/lib/request");
 const admin = models.admin;                  // mengimport model
 
-// end-point ditulis disini
+// import auth
+const auth = require("../auth")
+const jwt = require("jsonwebtoken")
+const SECRET_KEY = "BelajarNodeJSItuMenyenangkan"
 
 // end-point GET data Admin
 app.get("/", (req, res) => {
@@ -84,6 +90,43 @@ app.delete("/:id", (req, res) => {
                 message : error.message
             })
         })
+})
+
+// end-point login admin (authentication), METHOD: POST, function: findOne 
+app.post("/auth", async (req, res) => {
+    let data = {
+        username : req.body.username,
+        password : md5(req.body.password)
+    }
+
+    // cari data admin yang username dan password sama dengan input 
+    let result = await admin.findOne({where : data})
+    if (result) {
+        // ditemukan
+        // set payload data 
+        let payload = JSON.stringify({
+            admin_id: result.admin_id,
+            name: result.name,
+            username: result.username
+        })
+
+        // generate token based on payload and secret_key
+        let token = jwt.sign(payload, SECRET_KEY)
+
+        // set output 
+        res.json({
+            logged: true,
+            data: result,
+            token: token
+        })
+    }
+    else {
+        // tidak ditemukan 
+        res.json({
+            logged: false,
+            message: "Invalid username or password"
+        })
+    }
 })
 
 module.exports = app;
