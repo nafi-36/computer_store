@@ -11,7 +11,6 @@ const fs = require("fs")            // file sistem (mengakses file tersebut), em
 
 // import model
 const models = require('../models/index');
-const { error } = require("console");
 const customer = models.customer 
 
 // import auth

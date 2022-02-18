@@ -13,6 +13,10 @@ const fs = require("fs")                      // untuk membaca file sistem (dima
 const models = require('../models/index');
 const product = models.product 
 
+// import auth 
+const auth = require("../auth")
+app.use(auth) // harus login baru bisa akses end-point
+
 // config storage image, membuat konfigurasi untuk menyimpan foto / dimana foto yang diinsert akan disimpan
 const storage = multer.diskStorage({
     destination:(req,file,cb) => {

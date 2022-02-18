@@ -10,7 +10,6 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 // import model
 const models = require('../models/index');   // mengimport file index.js dlm folder
-const req = require("express/lib/request");
 const admin = models.admin;                  // mengimport model
 
 // import auth
