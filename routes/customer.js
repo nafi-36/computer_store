@@ -7,7 +7,7 @@ const md5 = require('md5')          // enkripsi
                             
 const multer = require("multer")             
 const path = require("path")        
-const fs = require("fs")            // file sistem (mengakses file tersebut), embaca file sistem (dimana file itu) 
+const fs = require("fs")            // file sistem (mengakses file tersebut), membaca file sistem (dimana file itu) 
 
 // import model
 const models = require('../models/index');
@@ -38,6 +38,7 @@ app.get("/", (req, res) => {
     customer.findAll()             // mengambil data
         .then(result => {          // menampilkan data 
             res.json({
+                count: result.length,
                 customer: result
             })
         })
@@ -101,13 +102,13 @@ app.put("/:id", upload.single("image"), (req, res) =>{
     }
     if (req.file) {
         // get data by id
-        const row = customer.findOne({where: param}) // untuk 
+        const row = customer.findOne({where: param})  
         .then(result => {
-            let oldFileName = result.image // hasil gambar kita dapatkan dr database didimpan
+            let oldFileName = result.image // hasil gambar kita dapatkan dr database disimpan
            
             // delete old file
             let dir = path.join(__dirname,"../image/customer",oldFileName) // direktori gambar
-            // mneghapus sebuah file dari sistem 
+            // menghapus sebuah file dari sistem 
             fs.unlink(dir, err => console.log(err))
         })
         .catch(error => {
@@ -145,7 +146,7 @@ app.delete("/:id", async (req, res) =>{
            
         // delete old file
         let dir = path.join(__dirname,"../image/customer",oldFileName)
-        fs.unlink(dir, err => console.log(err))
+        fs.unlink(dir, err => console.log(err)) 
  
         // delete data
         customer.destroy({where: param})

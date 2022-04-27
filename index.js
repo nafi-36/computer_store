@@ -21,6 +21,8 @@ app.use("/product", product)                 // implementasi, membuat end-point
 const transaksi = require('./routes/transaksi');
 app.use("/transaksi", transaksi)
 
+app.use(express.static(__dirname))
+
 // app.get("/test", (req, res) => {
 //     let test = {
 //         message : "test"

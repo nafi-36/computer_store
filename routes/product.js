@@ -14,8 +14,8 @@ const models = require('../models/index');
 const product = models.product 
 
 // import auth 
-const auth = require("../auth")
-app.use(auth) // harus login baru bisa akses end-point
+const auth = require("../auth")                 
+app.use(auth)                                 // harus login beru bisa akses end-point         
 
 // config storage image, membuat konfigurasi untuk menyimpan foto / dimana foto yang diinsert akan disimpan
 const storage = multer.diskStorage({
@@ -33,10 +33,11 @@ let upload = multer({storage : storage})
 
 // menampilkan data product yang tersimpan
 // GET ALL PRODUCT, METHOD: GET, FUNCTION: findAll
-app.get("/", (req, res) => {
+app.get("/", auth, (req, res) => {
     product.findAll()
         .then(result => {
             res.json({
+                count: result.length, 
                 product: result
             })
         })

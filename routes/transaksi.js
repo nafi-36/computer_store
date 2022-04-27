@@ -13,7 +13,7 @@ const auth = require("../auth")
 app.use(auth) // semua end-point yg ada di file ini menggunakan auth
 
 // end-point menampilkan semua data transaksi
-app.get("/", async (req, res) => {
+app.get("/", auth, async (req, res) => {
     let result = await transaksi.findAll({
         include: [
             "customer",
@@ -26,6 +26,7 @@ app.get("/", async (req, res) => {
         ]
     })
     res.json({
+        count: result.length,
         transaksi: result
     })
 })

@@ -18,10 +18,13 @@ const jwt = require("jsonwebtoken")
 const SECRET_KEY = "BelajarNodeJSItuMenyenangkan"
 
 // end-point GET data Admin
-app.get("/", (req, res) => {
+app.get("/" , (req, res) => {
     admin.findAll()              // mengambil data
         .then(admin => {         // menampilkan data 
-            res.json(admin)
+            res.json({
+                count: admin.length,
+                admin: admin
+            })
         })
         .catch(error => {        // jika error 
             res.json({
@@ -35,7 +38,7 @@ app.post("/", (req, res) => {
     let data = {                             // data yg mau disimpan
         name: req.body.name,   
         username: req.body.username,
-        password: md5(req.body.password) 
+        password: md5(req.body.password)
     }
     admin.create(data)                       // menambahkan dan menyimpan data
         .then(result => {
